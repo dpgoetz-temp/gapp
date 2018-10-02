@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Search for Gifs{% endblock %}
+
+{% block content %}
+<h2>Search for new gifs</h2>
+{% if error %}
+    <h3 style="color: #ff3300;">Error: {{ error }}</h3> 
+{% endif %}
+<form action="{% url 'gifs:search' %}" method="get">
+  {% csrf_token %}
+  <input type="text" name="key">
+  <button type="submit">Search</button>
+</form>
+{% if gif_urls %}
+    <table class="tablestyle">
+    {% for gif_url in gif_urls %}
+    <tr>
+        <td><img src="{{ gif_url }}" alt="{{ gif_url }}"></td>
+        <td>
+          <form>
+            {% csrf_token %}
+            <input type="button" value="Save" onclick="saveGif('{{ gif_url }}')"/>
+            <div style="color: #009933;" id="{{ gif_url }}"></div>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% else %}
+    <p>Please search for some new gifs!</p>
+{% endif %}
+{% endblock %}

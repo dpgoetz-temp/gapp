@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Gif{% endblock %}
+
+{% block content %}
+<table>
+  <tr>
+    <td>Gif</td>
+    <td>Current Categories<br> <font size="-1">(uncheck and click Save to remove)</font></td>
+    <td>Add New Category</td>
+    <td>Delete</td>
+  </tr>
+<tr>
+    <td><img src="{{ gtu.gif_url }}" alt="{{ gtu.gif_url }}"></td>
+    <td>
+      <form action="{% url 'gifs:edit_gif_to_category' gif_url=gtu.gif_url %}" method="POST">
+        {% csrf_token %}
+        {% for cat in gif_cats %}
+          <input type="checkbox" name="{{ cat }}" value="{{ cat }}" checked>{{ cat }}<br>
+        {% endfor %}
+          <input type="Submit" value="Save"/>
+      </form>
+    </td>
+    <td>
+      <form action="{% url 'gifs:add_gif_to_category' gif_url=gtu.gif_url %}" method="POST">
+        {% csrf_token %}
+        <table>
+          <tr>
+            <td>Add New Categories:</td>
+            <td><input type="text" name="newcategory"><br>
+                <input type="text" name="newcategory"><br>
+                <input type="text" name="newcategory"><br>
+            </td>
+          </tr>
+        </table>
+        {% if all_cats %}
+          <br>
+          Or<br>
+          Assign Existing Category:
+          <select name="newcategory">
+            <option value="">-</option>
+            {% for cat in all_cats %}
+            <option value="{{ cat }}">{{ cat }}</option>
+            {% endfor %}
+          </select>
+        {% endif %}
+
+          <input type="submit" value="Assign Categories"/>
+      </form>
+    </td>
+    <td>
+      <form action="{% url 'gifs:delete_gif_to_user' gif_url=gtu.gif_url %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Delete This Gif"/>
+        </form>
+    </td>
+  </tr>
+</table>
+{% endblock %}

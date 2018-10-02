@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+  <script type="text/javascript" src="http://f07ea1676c5f103d1a57-0e0d8cb57bcd7a0e1ee568517b910d34.r24.cf2.rackcdn.com/scripts.js"></script>
+  <script type="text/javascript" src="http://f07ea1676c5f103d1a57-0e0d8cb57bcd7a0e1ee568517b910d34.r24.cf2.rackcdn.com//js.cookie.js"></script>
+  <meta charset="utf-8">
+  <title>{% block title %}My Favorite Gifs{% endblock %}</title>
+</head>
+<body>
+  <main>
+      {% if user.is_authenticated %}
+    <ul>
+      <li>Hi {{ user.username }}! (<a href="{% url 'logout' %}">logout</a>)</li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/gifs/">See My Gifs</a></li>
+      <li><a href="/gifs/search">Search for New Gifs</a></li>
+    </ul>
+      {% else %}
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'signup' %}">Create a New User</a></li>
+      </ul>
+      {% endif %}
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>

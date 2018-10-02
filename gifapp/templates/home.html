@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <h3>Welcome to the Giphy App</h3>
+  <p>
+  With the application you can search for gifs using keywords
+  and save them to your account. Once saved, you can assign them
+  searchable categories to help organize your collection.
+  </p>
+  <br>
+  To start off click <a href="/gifs/search">Search for New Gifs</a>.
+  <br>
+
+{% else %}
+  <h2>Welcome the the giphy app</h2>
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+  <br>
+  <a href="{% url 'signup' %}">Create a New User</a>
+{% endif %}
+{% endblock %}

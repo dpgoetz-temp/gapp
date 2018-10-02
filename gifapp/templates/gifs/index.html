@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}My Gifs{% endblock %}
+
+{% block content %}
+{% if gifs_with_cats %}
+<form action="{% url 'gifs:index' %}" method="GET">
+  Filter Gifs By Category:
+  {% if all_cats %}
+  <select name="category_filter" onchange="this.form.submit();">
+    {% if cat_filter %}
+      <option value="{{ cat_filter }}">{{ cat_filter }}</option>
+    {% else %}
+      <option value=""></option>
+    {% endif %}
+    <option value="">-- Clear Filter --</option>
+    {% for cat in all_cats %}
+    <option value="{{ cat }}">{{ cat }}</option>
+    {% endfor %}
+  </select>
+  {% else %}
+    No categories yet.
+  {% endif %}
+</form>
+<br>
+    <table>
+      <tr>
+        <td>Gif</td>
+        <td>Categories</td>
+        <td>Actions</td>
+      </tr>
+    {% for gif_url, cats in gifs_with_cats %}
+    <tr>
+        <td><img src="{{ gif_url }}" alt="{{ gif_url }}"></td>
+        <td>
+          {% for cat in cats %}
+          {{ cat }}<br>
+          {% endfor %}
+        </td>
+        <td>
+            <input type="button" value="Edit"
+                 onclick="location.href='{% url 'gifs:editor' gif_url=gif_url %}'"/>
+
+          <form action="{% url 'gifs:delete_gif_to_user' gif_url=gif_url %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Delete"/>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% else %}
+    <p>Get some gifs <a href="{% url 'gifs:search' %}">here.</a></p>
+{% endif %}
+{% endblock %}
